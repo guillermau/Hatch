@@ -70,10 +70,10 @@ router.put('/:idIdea/skills/:idSkill', () => {
 
 router.put('/:idIdea/skills', (req, res) => {
   if (`Array` === typeof req.body) {
-    async.each(req.body, (skill) => {
-
+    async.each(req.body, (skill, next) => {
+      next();
     }, (err) => {
-
+      API.notImplemented(res);
     })
   }
   else {

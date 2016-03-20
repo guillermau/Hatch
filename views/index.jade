@@ -2,4 +2,9 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  form(name="api/email", method="post")
+    div.input
+      span.label Your email address
+      input(type="text", name="mail")
+    div.actions
+      input(type="submit", value="subscribe")
