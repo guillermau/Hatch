@@ -91,4 +91,8 @@ router.delete('/:idUser/like/:idIdea', (req, res) => {
   API.notImplemented(res);
 });
 
+router.get('/:idUser/recommendations', (req, res) => {
+  API.notImplemented(res);
+}); // TODO : Top priority
+
 module.exports = router;

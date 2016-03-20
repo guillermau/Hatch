@@ -4,6 +4,7 @@ const cradle = require('cradle');
 const API = require('../lib/api');
 const configCouch = require('../config/couchdb');
 const async = require('async');
+const _ = require(`lodash`);
 
 const c = new(cradle.Connection)(configCouch.host, configCouch.port);
 const db = c.database(configCouch.database);
@@ -70,11 +71,37 @@ router.put('/:idIdea/skills/:idSkill', () => {
 
 router.put('/:idIdea/skills', (req, res) => {
   if (`Array` === typeof req.body) {
-    async.each(req.body, (skill, next) => {
-      next();
-    }, (err) => {
-      API.notImplemented(res);
-    })
+    db.get(req.params.idIdea, function (err, docIdea) {
+      if (err) {
+
+      }
+      else {
+        const skillArray = docIdea.linkedSkills;
+        async.each(req.body, (skill, next) => {
+          if (`string` === typeof skill) {
+            db.save({
+              skillName: skill.toUpperCase()
+            }, (err, res) => {
+              if (err) {
+                skillArray.push(res._id);
+                next();
+              }
+              else {
+                next(err);
+              }
+            });
+          }
+        }, (err) => {
+          if (err) {
+            API.notImplemented(res);
+          }
+          else {
+            db.save();
+          }
+
+        })
+      }
+    });
   }
   else {
     API.errorResponse(res);

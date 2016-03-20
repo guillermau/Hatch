@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-/* GET field list. */
+/* GET field details. */
 router.get('/:idField', function(req, res, next) {
 	db.view('fields/all', {_id: req.params.idField}, function (err, doc) {
 		if (err) {
@@ -32,6 +32,7 @@ router.get('/:idField', function(req, res, next) {
 	});
 });
 
+/* POST field data */
 router.post('/', function(req, res) {
 	if (`undefined` !== typeof req.body) {
 		if (`undefined` !== typeof req.body.fieldName) {
